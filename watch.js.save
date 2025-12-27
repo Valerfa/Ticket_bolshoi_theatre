@@ -69,14 +69,14 @@ async function sendTelegram(text) {
     : null;
 
   if (currentHash !== prevHash) {
-  fs.writeFileSync(HASH_FILE, currentHash, "utf8");
-  console.log("Change detected, notifications temporarily disabled.");
-} else {
-  console.log("No changes.");
-} else {
+    fs.writeFileSync(HASH_FILE, currentHash, "utf8");
+    await sendTelegram(
+      `🔔 Изменение HTML на странице:\n${URL}\n\nold: ${prevHash ?? "—"}\nnew: ${currentHash}`
+    );
+    console.log("Change detected. Notification sent.");
+  } else {
     console.log("No changes.");
   }
 })().catch((e) => {
-  console.error(e);
   process.exit(1);
 });
